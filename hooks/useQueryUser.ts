@@ -6,16 +6,16 @@ import { User } from '@prisma/client'
 export const useQueryUser = () => {
   const router = useRouter()
   const getUser = async () => {
-    const { data } = await axios.get<Omit<User, 'password'>>(
-      `${process.env.NEXT_PUBLIC_API_URL}/user`
+    const { data } = await axios.get<Omit<User, 'password' | 'confirm_password'>>(
+      `${process.env.NEXT_PUBLIC_API_URL}/user`,
     )
     return data
   }
-  return useQuery<Omit<User, 'password'>, Error>({
+  return useQuery<Omit<User, 'password' | 'confirm_password'>, Error>({
     queryKey: ['user'],
     queryFn: getUser,
     onError: (err: any) => {
-      if (err.response.status === 401)
+      if (err.response.status === 401 || err.response.status === 403)
         router.push('/')
     },
   })
