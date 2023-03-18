@@ -1,13 +1,13 @@
 import { NextPage } from 'next'
 import { UserInfo } from '../components/UserInfo'
-import { useQueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useRouter } from 'next/router'
 import axios from 'axios'
 import { Button } from '@mantine/core'
 
 const Dashboard: NextPage = () => {
   const router = useRouter()
-  const queryClient = useQueryClient()
+  const queryClient = new QueryClient()
   const signout = async () => {
     queryClient.removeQueries(['user'])
     await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/auth/signout`)
